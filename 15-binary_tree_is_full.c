@@ -1,41 +1,25 @@
 #include "binary_trees.h"
+#include "14-binary_tree_balance.c"
 
 /**
- * binary_tree_is_full - A function that checks if a binary tree is full
- * @tree: A pointer to the root node of the tree
+ * binary_tree_is_full - function that checks if a binary tree is full
  *
- * Return: 1 if it's full, 0 if otherwise
+ * @tree: pointer to the root node of the tree to check
+ * Return: 1 if tree is full, 0 otherwise
  */
 int binary_tree_is_full(const binary_tree_t *tree)
 {
-	int half;
-
-	if (tree == NULL)
+	if (!tree)
 		return (0);
-	half = binary_t_i_f_half(tree);
-	if (half == 0)
+
+	/* Leaves are balanced */
+	if (!tree->left && !tree->right)
 		return (1);
-	else
-		return (0);
-}
 
-/**
- * binary_t_i_f_half - Check the tree half by half
- * @tree: A pointer to the root node of the tree
- *
- * Return: 0 if it's full, greater than 0 if it's not full
- */
-int binary_t_i_f_half(const binary_tree_t *tree)
-{
-	size_t left_hf, right_hf;
-
-	if (tree == NULL)
-		return (0);
-	else if (tree->left == NULL && tree->right == NULL)
-		return (0);
-	left_hf = binary_t_i_f_half(tree->left);
-	right_hf = binary_t_i_f_half(tree->right);
+	/* Node has both children */
 	if (tree->left && tree->right)
-		return (left_hf + right_hf);
-	return (left_hf + right_hf + 1);
+		return (binary_tree_is_full(tree->left) && binary_tree_is_full(tree->right));
+
+	/* Node does not have both children */
+	return (0);
 }
